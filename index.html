@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Query Labs — Data-Driven Marketing Agency</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --cream: #F5EFE6;
+    --cream-dark: #EBE3D5;
+    --black: #1A1A1A;
+    --burgundy: #6B1F2A;
+    --burgundy-dark: #4A151D;
+    --emerald: #2F4538;
+    --emerald-light: #3D5A48;
+    --beige: #D9D0C0;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  
+  /* Навигация */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    background: rgba(245, 239, 230, 0.97);
+    backdrop-filter: blur(20px);
+    padding: 22px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    border-bottom: 1px solid var(--beige);
+    transition: all 0.3s;
+  }
+  nav.scrolled {
+    padding: 15px 60px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6em; font-weight: 900;
+    color: var(--burgundy);
+    letter-spacing: 1px;
+    transition: transform 0.3s;
+  }
+  .logo:hover { transform: scale(1.05); }
+  nav ul { display: flex; list-style: none; gap: 35px; }
+  nav a {
+    color: var(--black); text-decoration: none;
+    font-size: 0.9em; font-weight: 500;
+    transition: all 0.3s;
+    position: relative;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 0;
+    width: 0; height: 2px;
+    background: var(--burgundy);
+    transition: width 0.3s;
+  }
+  nav a:hover::after { width: 100%; }
+  nav a:hover { color: var(--burgundy); }
+  .nav-cta {
+    padding: 12px 28px;
+    background: var(--burgundy);
+    color: var(--cream);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: all 0.3s;
+  }
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(107, 31, 42, 0.3);
+  }
+  
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 120px 60px 60px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #8B9D77 0%, #C5D4B8 50%, #6B7D5A 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(245, 239, 230, 0.85);
+    z-index: 0;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 1200px; }
+  .hero-tag {
+    font-size: 0.85em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    margin-bottom: 30px;
+    font-weight: 600;
+    opacity: 0;
+    animation: slideUp 0.8s ease forwards;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3em, 8vw, 6.5em);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 30px;
+    color: var(--black);
+    letter-spacing: -2px;
+    opacity: 0;
+    animation: slideUp 1s ease 0.2s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--burgundy);
+    display: inline-block;
+    transition: transform 0.3s;
+  }
+  .hero h1 em:hover {
+    transform: scale(1.05);
+  }
+  .hero .subtitle {
+    font-size: 1.2em;
+    color: var(--black);
+    opacity: 0;
+    max-width: 600px;
+    margin-bottom: 50px;
+    animation: slideUp 1s ease 0.4s forwards;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: slideUp 1s ease 0.6s forwards;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .btn {
+    padding: 18px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: all 0.3s;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--burgundy);
+    color: var(--cream);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(107, 31, 42, 0.3);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+  }
+  .btn-outline:hover {
+    background: var(--black);
+    color: var(--cream);
+    transform: translateY(-3px);
+  }
+  
+  /* Бегущая строка */
+  .marquee {
+    background: var(--emerald);
+    color: var(--cream);
+    padding: 28px 0;
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    margin: 0 50px;
+    white-space: nowrap;
+    opacity: 0.8;
+    letter-spacing: 1px;
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  /* Секции */
+  section { padding: 120px 60px; position: relative; }
+  .container { max-width: 1400px; margin: 0 auto; }
+  
+  .section-header {
+    margin-bottom: 80px;
+    max-width: 800px;
+  }
+  .section-label {
+    display: inline-block;
+    font-size: 0.8em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--emerald);
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5em, 5vw, 4em);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    color: var(--black);
+  }
+  h2 em {
+    font-style: italic;
+    color: var(--burgundy);
+    transition: transform 0.3s;
+    display: inline-block;
+  }
+  h2 em:hover {
+    transform: scale(1.05);
+  }
+  .section-desc {
+    color: var(--black);
+    opacity: 0.65;
+    font-size: 1.15em;
+  }
+  
+  /* Статистика */
+  .stats {
+    background: var(--black);
+    color: var(--cream);
+    padding: 100px 60px;
+  }
+  .stats-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 60px;
+  }
+  .stat-item {
+    border-top: 1px solid rgba(245, 239, 230, 0.2);
+    padding-top: 30px;
+    transition: transform 0.3s;
+  }
+  .stat-item:hover {
+    transform: translateY(-5px);
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4em;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: var(--cream);
+  }
+  .stat-number span {
+    color: var(--burgundy);
+  }
+  .stat-label {
+    color: var(--cream);
+    opacity: 0.7;
+    font-size: 0.95em;
+  }
+  
+  /* О нас */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--black);
+    font-size: 1.1em;
+    margin-bottom: 25px;
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+  .about-text strong {
+    color: var(--burgundy);
+    font-weight: 700;
+  }
+  .about-image {
+    height: 550px;
+    background: var(--cream-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.5s;
+  }
+  .about-image:hover {
+    transform: scale(1.02);
+  }
+  .about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s;
+  }
+  .about-image:hover img {
+    transform: scale(1.1);
+  }
+  
+  /* Услуги */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--beige);
+  }
+  .service-item {
+    padding: 50px 40px;
+    border-bottom: 1px solid var(--beige);
+    border-right: 1px solid var(--beige);
+    transition: all 0.4s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--emerald);
+    transform: translateY(100%);
+    transition: transform 0.4s;
+    z-index: 0;
+  }
+  .service-item:hover::before {
+    transform: translateY(0);
+  }
+  .service-item > * {
+    position: relative;
+    z-index: 1;
+  }
+  .service-item:nth-child(3n) { border-right: none; }
+  .service-item:hover .service-num,
+  .service-item:hover p { color: var(--cream); }
+  .service-item:hover h3 { color: var(--cream); }
+  .service-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    font-weight: 900;
+    color: var(--burgundy);
+    margin-bottom: 20px;
+    transition: color 0.4s;
+  }
+  .service-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    transition: color 0.4s;
+  }
+  .service-item p {
+    color: var(--black);
+    opacity: 0.7;
+    font-size: 0.95em;
+    line-height: 1.6;
+    transition: color 0.4s;
+  }
+  
+  /* Кейсы */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 40px;
+  }
+  .case-card {
+    background: var(--cream);
+    border: 1px solid var(--beige);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.4s;
+  }
+  .case-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(107, 31, 42, 0.2);
+    border-color: var(--burgundy);
+  }
+  .case-image {
+    height: 320px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .case-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s;
+  }
+  .case-card:hover .case-image img {
+    transform: scale(1.1);
+  }
+  .case-image::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(107, 31, 42, 0.4) 100%);
+  }
+  .case-content {
+    padding: 40px;
+  }
+  .case-tag {
+    display: inline-block;
+    font-size: 0.75em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .case-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    color: var(--black);
+  }
+  .case-content p {
+    color: var(--black);
+    opacity: 0.7;
+    margin-bottom: 25px;
+  }
+  .case-stats {
+    display: flex;
+    gap: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--beige);
+  }
+  .case-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    font-weight: 900;
+    color: var(--burgundy);
+    transition: transform 0.3s;
+  }
+  .case-card:hover .case-stat-num {
+    transform: scale(1.1);
+  }
+  .case-stat-label {
+    font-size: 0.8em;
+    color: var(--black);
+    opacity: 0.6;
+    margin-top: 5px;
+  }
+  
+  /* Технологии */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+  }
+  .tech-category {
+    background: var(--cream);
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--beige);
+    transition: all 0.3s;
+  }
+  .tech-category:hover {
+    border-color: var(--emerald);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(47, 69, 56, 0.1);
+  }
+  .tech-category h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3em;
+    margin-bottom: 25px;
+    color: var(--burgundy);
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--beige);
+  }
+  .tech-list {
+    list-style: none;
+  }
+  .tech-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--beige);
+    color: var(--black);
+    font-size: 0.95em;
+    opacity: 0.8;
+    transition: all 0.3s;
+  }
+  .tech-list li:hover {
+    opacity: 1;
+    padding-left: 10px;
+    color: var(--burgundy);
+  }
+  .tech-list li:last-child { border-bottom: none; }
+  
+  /* Команда */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+  }
+  .team-member {
+    text-align: left;
+    transition: transform 0.3s;
+  }
+  .team-member:hover {
+    transform: translateY(-10px);
+  }
+  .team-photo {
+    width: 100%;
+    height: 380px;
+    background: var(--cream-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s;
+  }
+  .team-member:hover .team-photo img {
+    transform: scale(1.1);
+  }
+  .team-member h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3em;
+    margin-bottom: 5px;
+    color: var(--black);
+  }
+  .team-member p {
+    color: var(--burgundy);
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Калькулятор ROI */
+  .calculator {
+    background: var(--emerald);
+    color: var(--cream);
+    padding: 100px 60px;
+    border-radius: 16px;
+    margin: 0 60px;
+  }
+  .calculator h2 { color: var(--cream); }
+  .calculator h2 em { color: var(--burgundy); }
+  .calculator .section-label {
+    color: var(--cream);
+    border-bottom-color: var(--cream);
+  }
+  .calculator .section-desc {
+    color: var(--cream);
+    opacity: 0.7;
+  }
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 60px;
+  }
+  .calc-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+  .calc-input-group label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 12px;
+    color: var(--cream);
+    opacity: 0.8;
+    font-weight: 500;
+  }
+  .calc-input-group input[type="range"] {
+    width: 100%;
+    height: 4px;
+    background: rgba(245, 239, 230, 0.2);
+    border-radius: 2px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .calc-input-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--burgundy);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid var(--cream);
+    transition: transform 0.3s;
+  }
+  .calc-input-group input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+  .calc-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--cream);
+    margin-top: 12px;
+  }
+  .calc-results {
+    background: rgba(245, 239, 230, 0.08);
+    padding: 45px;
+    border-radius: 12px;
+    border: 1px solid rgba(245, 239, 230, 0.15);
+  }
+  .calc-result-item {
+    margin-bottom: 35px;
+    padding-bottom: 35px;
+    border-bottom: 1px solid rgba(245, 239, 230, 0.15);
+  }
+  .calc-result-item:last-of-type {
+    margin-bottom: 30px;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .calc-result-label {
+    font-size: 0.85em;
+    color: var(--cream);
+    opacity: 0.7;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .calc-result-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    font-weight: 900;
+    color: var(--cream);
+    transition: transform 0.3s;
+  }
+  .calc-result-value:hover {
+    transform: scale(1.05);
+  }
+  .calc-result-value.highlight {
+    color: var(--burgundy);
+  }
+  
+  /* Контакты */
+  .contact {
+    background: var(--black);
+    color: var(--cream);
+    padding: 120px 60px;
+  }
+  .contact h2 { color: var(--cream); }
+  .contact h2 em { color: var(--burgundy); }
+  .contact .section-label {
+    color: var(--cream);
+    border-bottom-color: var(--burgundy);
+  }
+  .contact .section-desc {
+    color: var(--cream);
+    opacity: 0.7;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 60px;
+  }
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8em;
+    margin-bottom: 35px;
+    color: var(--cream);
+  }
+  .contact-item {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(245, 239, 230, 0.1);
+    transition: transform 0.3s;
+  }
+  .contact-item:hover {
+    transform: translateX(10px);
+  }
+  .contact-item:last-of-type { border-bottom: none; }
+  .contact-item h4 {
+    font-size: 0.75em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--burgundy);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .contact-item p {
+    font-size: 1.1em;
+    color: var(--cream);
+    opacity: 0.9;
+  }
+  .social-links {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    border: 1px solid rgba(245, 239, 230, 0.15);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--cream);
+    transition: all 0.3s;
+  }
+  .social-link:hover {
+    border-color: var(--burgundy);
+    background: rgba(107, 31, 42, 0.2);
+    transform: translateX(10px);
+  }
+  .social-link .icon {
+    font-size: 1.3em;
+    width: 30px;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.75em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.6;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid rgba(245, 239, 230, 0.2);
+    border-radius: 6px;
+    color: var(--cream);
+    font-family: inherit;
+    font-size: 1em;
+    transition: border-color 0.3s;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(245, 239, 230, 0.4);
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--burgundy);
+  }
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .submit-btn {
+    padding: 18px 40px;
+    background: var(--burgundy);
+    color: var(--cream);
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95em;
+    margin-top: 10px;
+  }
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(107, 31, 42, 0.4);
+  }
+  
+  /* Footer */
+  footer {
+    background: var(--black);
+    color: var(--cream);
+    opacity: 0.5;
+    padding: 40px 60px;
+    border-top: 1px solid rgba(245, 239, 230, 0.1);
+    font-size: 0.9em;
+  }
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Анимации при скролле */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 768px) {
+    nav { padding: 15px 20px; }
+    nav ul { display: none; }
+    section { padding: 80px 20px; }
+    .hero { padding: 100px 20px 60px; }
+    .about-grid, .contact-grid, .calc-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stats, .contact, .calculator { padding: 80px 20px; }
+    .calculator { margin: 0 20px; }
+    .service-item:nth-child(3n) { border-right: 1px solid var(--beige); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Query Labs</div>
+  <ul>
+    <li><a href="#about">О нас</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#cases">Кейсы</a></li>
+    <li><a href="#tech">Технологии</a></li>
+    <li><a href="#team">Команда</a></li>
+    <li><a href="#calculator">Калькулятор</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Начать проект</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Data-Driven Marketing Agency · Est. 2020</div>
+    <h1>Мы знаем, что ваши данные <em>хотят сказать</em>, но стесняются</h1>
+    <p class="subtitle">Маркетинговое агентство полного цикла для IT и B2B продуктов. Превращаем молчаливые цифры в громкие результаты.</p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn btn-primary">Начать проект →</a>
+      <a href="#cases" class="btn btn-outline">Смотреть кейсы</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="marquee-item">TECHCORP</div>
+    <div class="marquee-item">DATAFLOW</div>
+    <div class="marquee-item">CLOUDSCALE</div>
+    <div class="marquee-item">FINTECH.IO</div>
+    <div class="marquee-item">SAASPRO</div>
+    <div class="marquee-item">NEXGEN</div>
+    <div class="marquee-item">TECHCORP</div>
+    <div class="marquee-item">DATAFLOW</div>
+    <div class="marquee-item">CLOUDSCALE</div>
+    <div class="marquee-item">FINTECH.IO</div>
+    <div class="marquee-item">SAASPRO</div>
+    <div class="marquee-item">NEXGEN</div>
+  </div>
+</div>
+
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">150<span>+</span></div>
+      <div class="stat-label">Проектов реализовано</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">15<span>+</span></div>
+      <div class="stat-label">Стран присутствия</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">98<span>%</span></div>
+      <div class="stat-label">Довольных клиентов</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">3.5<span>x</span></div>
+      <div class="stat-label">Средний рост ROI</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">О нас</div>
+      <h2>Превращаем данные в <em>результаты</em></h2>
+      <p class="section-desc">Команда аналитиков, стратегов и маркетологов</p>
+    </div>
+    
+    <div class="about-grid">
+      <div class="about-text">
+        <p><strong>Query Labs основана в 2020 году</strong> в Москве. Начав с трёх человек и одного клиента, мы выросли в команду из 45 экспертов.</p>
+        <p>Наш первый проект — SaaS-платформа для финтеха — принес клиенту рост MRR на 340% за полгода. Это стало нашей визитной карточкой.</p>
+        <p>Сегодня мы работаем с компаниями от стартапов до enterprise-гигантов в 15+ странах. Наша миссия — сделать так, чтобы каждое бизнес-решение было основано на данных.</p>
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="Team" onerror="this.src='https://picsum.photos/seed/team/800/600'">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Услуги</div>
+      <h2>Полный спектр <em>решений</em></h2>
+      <p class="section-desc">Всё, что нужно для роста вашего IT-продукта</p>
+    </div>
+    
+    <div class="services-grid">
+      <div class="service-item">
+        <div class="service-num">01</div>
+        <h3>Глубокая аналитика</h3>
+        <p>Анализируем данные, рынок и конкурентов. Настраиваем дашборды и даем практические инсайты.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-num">02</div>
+        <h3>Стратегия</h3>
+        <p>Определяем ценностное предложение и стратегию выхода на рынок.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-num">03</div>
+        <h3>Performance</h3>
+        <p>Реклама, SEO, контент и лидогенерация — оптимизировано под ROI.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-num">04</div>
+        <h3>Автоматизация и ИИ</h3>
+        <p>ИИ-инструменты для персонализации и прогнозной аналитики.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-num">05</div>
+        <h3>Product Marketing</h3>
+        <p>Запуск продуктов, messaging и стратегии продвижения.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-num">06</div>
+        <h3>Контент</h3>
+        <p>Контент-планы и экспертные материалы для вашего бренда.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Кейсы</div>
+      <h2>Реальные <em>результаты</em></h2>
+      <p class="section-desc">Истории успеха наших клиентов</p>
+    </div>
+    
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-image">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Case 1" onerror="this.src='https://picsum.photos/seed/case1/800/600'">
+        </div>
+        <div class="case-content">
+          <div class="case-tag">SaaS Platform</div>
+          <h3>Рост MRR на 340% за 6 месяцев</h3>
+          <p>Перестроили стратегию лидогенерации и оптимизировали воронку продаж.</p>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-num">340%</div>
+              <div class="case-stat-label">Рост MRR</div>
+            </div>
+            <div>
+              <div class="case-stat-num">2.8x</div>
+              <div class="case-stat-label">Лиды</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-image">
+          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="Case 2" onerror="this.src='https://picsum.photos/seed/case2/800/600'">
+        </div>
+        <div class="case-content">
+          <div class="case-tag">Startup Launch</div>
+          <h3>Успешный запуск на 3 рынках</h3>
+          <p>Помогли стартапу выйти на рынки США, Европы и Азии.</p>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-num">3</div>
+              <div class="case-stat-label">Рынка</div>
+            </div>
+            <div>
+              <div class="case-stat-num">50K+</div>
+              <div class="case-stat-label">Пользователей</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-image">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Case 3" onerror="this.src='https://picsum.photos/seed/case3/800/600'">
+        </div>
+        <div class="case-content">
+          <div class="case-tag">Enterprise</div>
+          <h3>Снижение CAC на 65%</h3>
+          <p>Оптимизировали каналы и внедрили автоматизацию.</p>
+          <div class="case-stats">
+            <div>
+              <div class="case-stat-num">-65%</div>
+              <div class="case-stat-label">CAC</div>
+            </div>
+            <div>
+              <div class="case-stat-num">4.2x</div>
+              <div class="case-stat-label">ROI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Технологии</div>
+      <h2>Наш <em>стек</em></h2>
+      <p class="section-desc">Инструменты, которые мы используем для ваших результатов</p>
+    </div>
+    
+    <div class="tech-grid">
+      <div class="tech-category">
+        <h3> Аналитика и BI</h3>
+        <ul class="tech-list">
+          <li>Google Analytics 4</li>
+          <li>Amplitude</li>
+          <li>Mixpanel</li>
+          <li>Tableau</li>
+          <li>Power BI</li>
+        </ul>
+      </div>
+      <div class="tech-category">
+        <h3>🧠 Data & AI</h3>
+        <ul class="tech-list">
+          <li>SQL / PostgreSQL</li>
+          <li>Python</li>
+          <li>TensorFlow</li>
+          <li>OpenAI API</li>
+          <li>Custom LLMs</li>
+        </ul>
+      </div>
+      <div class="tech-category">
+        <h3>🚀 Performance & CRM</h3>
+        <ul class="tech-list">
+          <li>HubSpot</li>
+          <li>Salesforce</li>
+          <li>Google Ads</li>
+          <li>Meta Ads</li>
+          <li>LinkedIn Ads</li>
+        </ul>
+      </div>
+      <div class="tech-category">
+        <h3>⚡ Автоматизация</h3>
+        <ul class="tech-list">
+          <li>Zapier</li>
+          <li>Make</li>
+          <li>Apache Airflow</li>
+          <li>n8n</li>
+          <li>Custom APIs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Команда</div>
+      <h2>Люди, которые делают <em>магию</em></h2>
+      <p class="section-desc">45 экспертов в 3 офисах</p>
+    </div>
+    
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-photo">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop&crop=face" alt="CEO" onerror="this.src='https://picsum.photos/seed/team1/400/500'">
+        </div>
+        <h3>Александр Волков</h3>
+        <p>CEO & Founder</p>
+      </div>
+      <div class="team-member">
+        <div class="team-photo">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=500&fit=crop&crop=face" alt="Analytics" onerror="this.src='https://picsum.photos/seed/team2/400/500'">
+        </div>
+        <h3>Екатерина Смирнова</h3>
+        <p>Head of Analytics</p>
+      </div>
+      <div class="team-member">
+        <div class="team-photo">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face" alt="Creative" onerror="this.src='https://picsum.photos/seed/team3/400/500'">
+        </div>
+        <h3>Дмитрий Козлов</h3>
+        <p>Creative Director</p>
+      </div>
+      <div class="team-member">
+        <div class="team-photo">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=500&fit=crop&crop=face" alt="Data" onerror="this.src='https://picsum.photos/seed/team4/400/500'">
+        </div>
+        <h3>Анна Петрова</h3>
+        <p>Data Scientist</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator" class="calculator">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Калькулятор ROI</div>
+      <h2>Рассчитайте ваш <em>потенциал роста</em></h2>
+      <p class="section-desc">Узнайте, сколько вы можете заработать с Query Labs</p>
+    </div>
+    
+    <div class="calc-grid">
+      <div class="calc-inputs">
+        <div class="calc-input-group">
+          <label>Текущая месячная выручка</label>
+          <input type="range" id="revenue" min="1000000" max="100000000" value="5000000" step="1000000">
+          <div class="calc-value" id="revenue-value">5 000 000 ₽</div>
+        </div>
+        <div class="calc-input-group">
+          <label>Бюджет на маркетинг</label>
+          <input type="range" id="budget" min="100000" max="10000000" value="500000" step="100000">
+          <div class="calc-value" id="budget-value">500 000 ₽</div>
+        </div>
+        <div class="calc-input-group">
+          <label>Конверсия в покупку</label>
+          <input type="range" id="conversion" min="0.5" max="10" value="2" step="0.5">
+          <div class="calc-value" id="conversion-value">2%</div>
+        </div>
+      </div>
+      
+      <div class="calc-results">
+        <div class="calc-result-item">
+          <div class="calc-result-label">Ваш текущий ROI</div>
+          <div class="calc-result-value" id="current-roi">10x</div>
+        </div>
+        <div class="calc-result-item">
+          <div class="calc-result-label">Прогнозируемый ROI с Query Labs</div>
+          <div class="calc-result-value highlight" id="predicted-roi">25x</div>
+        </div>
+        <div class="calc-result-item">
+          <div class="calc-result-label">Дополнительная прибыль в год</div>
+          <div class="calc-result-value" id="extra-profit">+18 000 000 ₽</div>
+        </div>
+        <a href="#contact" class="btn btn-primary" style="margin-top: 20px;">Получить точный расчет →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Контакты</div>
+      <h2>Давайте <em>поговорим</em></h2>
+      <p class="section-desc">Готовы обсудить ваш проект?</p>
+    </div>
+    
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Наш офис</h3>
+        <div class="contact-item">
+          <h4>Адрес</h4>
+          <p>Москва, ул. Тверская, д. 15, стр. 2<br>БЦ "Центральный", 5 этаж</p>
+        </div>
+        <div class="contact-item">
+          <h4>Телефон</h4>
+          <p>+7 (495) 123-45-67</p>
+        </div>
+        <div class="contact-item">
+          <h4>Email</h4>
+          <p>hello@querylabs.ru</p>
+        </div>
+        
+        <div class="social-links">
+          <a href="https://t.me/querylabs" class="social-link" target="_blank">
+            <span class="icon">✈️</span>
+            <span>Telegram: @querylabs</span>
+          </a>
+          <a href="https://instagram.com/querylabs" class="social-link" target="_blank">
+            <span class="icon">📷</span>
+            <span>Instagram: @querylabs</span>
+          </a>
+          <a href="https://wa.me/74951234567" class="social-link" target="_blank">
+            <span class="icon">💬</span>
+            <span>WhatsApp: +7 (495) 123-45-67</span>
+          </a>
+        </div>
+      </div>
+      
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label>Ваше имя</label>
+          <input type="text" required placeholder="Иван Иванов">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" required placeholder="ivan@company.com">
+        </div>
+        <div class="form-group">
+          <label>Сообщение</label>
+          <textarea required placeholder="Расскажите о вашем проекте..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Отправить запрос →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Query Labs. Все права защищены.</p>
+    <p>Москва, ул. Тверская, д. 15</p>
+  </div>
+</footer>
+
+<script>
+function handleSubmit(event) {
+  event.preventDefault();
+  alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
+  event.target.reset();
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 100) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+const revenue = document.getElementById('revenue');
+const budget = document.getElementById('budget');
+const conversion = document.getElementById('conversion');
+
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+function updateCalculator() {
+  const rev = parseInt(revenue.value);
+  const bud = parseInt(budget.value);
+  const conv = parseFloat(conversion.value);
+  
+  document.getElementById('revenue-value').textContent = formatNumber(rev) + ' ₽';
+  document.getElementById('budget-value').textContent = formatNumber(bud) + ' ₽';
+  document.getElementById('conversion-value').textContent = conv + '%';
+  
+  const currentROI = (rev / bud).toFixed(0);
+  const predictedROI = (currentROI * 2.5).toFixed(0);
+  const extraProfit = (rev * 0.3 * 12);
+  
+  document.getElementById('current-roi').textContent = currentROI + 'x';
+  document.getElementById('predicted-roi').textContent = predictedROI + 'x';
+  document.getElementById('extra-profit').textContent = '+' + formatNumber(extraProfit) + ' ₽';
+}
+
+revenue.addEventListener('input', updateCalculator);
+budget.addEventListener('input', updateCalculator);
+conversion.addEventListener('input', updateCalculator);
+
+updateCalculator();
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-item, .case-card, .team-member, .stat-item, .tech-category').forEach(el => {
+  el.classList.add('fade-in');
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
