@@ -91,10 +91,8 @@
     padding: 120px 60px 60px;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #8B9D77 0%, #C5D4B8 50%, #6B7D5A 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
+    background: url('bg.jpg') center/cover no-repeat;
+  }  
   @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -104,7 +102,7 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(245, 239, 230, 0.85);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 0;
   }
   .hero-content { position: relative; z-index: 1; max-width: 1200px; }
